@@ -40,6 +40,25 @@ while not done:
                     current_song = len(songs) - 1
                 pygame.mixer.music.load(songs[current_song])
                 pygame.mixer.music.play()
+while not done:
+    for e in pygame.event.get():
+        if event.type == pygame.QUIT:
+            done = True
+
+        
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                if music_playing:
+                    pygame.mixer.music.pause()
+                    music_playing = False
+                else:
+                    pygame.mixer.music.unpause()
+                    music_playing = True
+            elif event.key == pygame.K_RIGHT:
+                current_song += 1
+                if current_song>= len(songs):
+                    current_song = 0
+            
 
     screen.blit(background, (0, 0))
     pygame.display.flip()
