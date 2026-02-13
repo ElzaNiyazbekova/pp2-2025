@@ -9,7 +9,7 @@ window_x, window_y = 400, 400
 
 black, white, red, green, blue, yellow, cyan = (0, 0, 0), (255, 255, 255), (255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0), (0, 255, 255)
 background_colors = [black, blue, yellow, cyan]
-current_bg_color = black
+current_bg_color = cyan
 
 pygame.init()
 
@@ -19,7 +19,7 @@ game_window = pygame.display.set_mode((window_x, window_y))
 fps = pygame.time.Clock()
 
 snake_position = [100, 50]
-snake_body = [[100, 50], [90, 50], [80, 50], [70, 50]]
+snake_body = [[50, 50], [90, 50], [80, 50], [70, 50]]
 
 def generate_food():
     while True:
@@ -54,8 +54,10 @@ def game_over():
     quit()
 
 def check_wall_collision():
-    if snake_position[0] < 0 or snake_position[0] >= window_x or snake_position[1] < 0 or snake_position[1] >= window_y:
-        game_over()
+    if snake_position[0] < 0 or snake_position[0] >= window_x:
+        snake_position[0] = snake_position[0] % window_x
+    elif snake_position[1] < 0 or snake_position[1] >= window_y:
+        snake_position[1] = snake_position[1] % window_y
 
 while True:
     for event in pygame.event.get():
@@ -90,6 +92,7 @@ while True:
     elif direction == 'RIGHT':
         snake_position[0] += 10
 
+        
 
     check_wall_collision()
 
@@ -119,8 +122,6 @@ while True:
         pygame.draw.rect(game_window, green, pygame.Rect(pos[0], pos[1], 10, 10))
     pygame.draw.rect(game_window, white, pygame.Rect(fruit_position[0], fruit_position[1], 10, 10))
 
-    if any(block == snake_position for block in snake_body[1:]):
-        game_over()
 
     show_score_and_level(white, 'times new roman', 35)
     pygame.display.update()

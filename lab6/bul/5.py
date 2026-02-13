@@ -1,7 +1,4 @@
-from functools import reduce
-from operator import mul
-import time
-import math
+
 def t(e):
     return all(e)
 

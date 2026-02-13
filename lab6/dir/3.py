@@ -9,3 +9,9 @@ if os.path.exists(path):
     print("Filename:", filename)
 else:
     print("Path does not exist")
+
+if os.path.exists(path):
+    print("Path exists")
+    di, file = os.path.split(path)
+
+        

@@ -6,4 +6,4 @@ def check_access(path):
     print("Writable:", os.access(path, os.W_OK))
     print("Executable:", os.access(path, os.X_OK))
 
-check_access(r"/Usr/local/")
+check_access(r"/Users/elzaniyazbekova/Desktop/pp2/lab6")

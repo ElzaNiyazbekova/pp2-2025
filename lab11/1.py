@@ -6,7 +6,7 @@ import psycopg2, csv
 
 # db = psycopg2.connect(dbname='lab10', user='postgres', password='12345', host='5432')
 db = psycopg2.connect(
-    dbname='phonebook',
+    dbname='phonebook1',
     user='postgres',
     password='12345',
     host='localhost',  # Или '127.0.0.1'
@@ -15,11 +15,11 @@ db = psycopg2.connect(
 
 current=db.cursor()
 current.execute("""
-    CREATE TABLE IF NOT EXISTS phonebook (
+    CREATE TABLE IF NOT EXISTS phonebook1 (
         person_name VARCHAR(50),
         phone_number VARCHAR(20)
     );
-    INSERT INTO phonebook (person_name, phone_number) 
+    INSERT INTO phonebook1 (person_name, phone_number) 
     VALUES
         ('John', '12345678901'),
         ('Jane', '19876543210'),
@@ -46,13 +46,13 @@ if req =='1':
     n = input("Enter name ")
     p = input("Enter phone")
     sql="""
-        INSERT INTO phonebook VALUES(%s, %s);
+        INSERT INTO phonebook1 VALUES(%s, %s);
     """
     current.execute(sql,(n, p))
 
 elif req=='2':
     sql="""
-        INSERT INTO phonebook VALUES(%s, %s) returning *;
+        INSERT INTO phonebook1 VALUES(%s, %s) returning *;
     """
     re = []
     with open ('/Users/elzaniyazbekova/Desktop/pp2/lab10/p_b.csv') as f:
@@ -67,7 +67,7 @@ elif req=='3':
         x = input("Enter new p_n")
         y = input("Enter the new name")
         sql = """
-            UPDATE phonebook SET person_name = %s WHERE phone_number = %s;
+            UPDATE phonebook1 SET person_name = %s WHERE phone_number = %s;
         """
 
 
@@ -77,7 +77,7 @@ elif req=='3':
 elif req=='4':
     x = input("Enter the number of contacts")
     sql = """
-        SELECT * FROM phonebook;"""
+        SELECT * FROM phonebook1;"""
     current.execute(sql)
     re = current.fetchmany(int(x))
 
@@ -86,7 +86,7 @@ elif req=='4':
         print('{0:20}{1:20}'.format(re[i][0], re[i][1]))
 elif req == '5':
     sql = """
-        SELECT phone_number FROM phonebook
+        SELECT phone_number FROM phonebook1
     """
     current.execute(sql)
     results = current.fetchall()
@@ -106,7 +106,7 @@ elif req == '6':
         x = input("Enter the name: ")
         y = input("Enter the new phone_number: ")
         sql = """
-            UPDATE phonebook SET phone_number = %s WHERE person_name = %s;
+            UPDATE phonebook1 SET phone_number = %s WHERE person_name = %s;
         """
         current.execute(sql, (y, x))
         print("Data has been updated")
@@ -120,14 +120,14 @@ elif req == '7':
         cont.append(tuple(tup.split(',')))
     print(cont)
     sql="""
-        INSERT INTO phonebook VALUES(%s, %s);
+        INSERT INTO phonebook1 VALUES(%s, %s);
     """
     for i in range(len(cont)):
         current.execute(sql, (cont[i][0], cont[i][1]))
 
 elif req == '0':
     sql = """
-        SELECT * FROM phonebook
+        SELECT * FROM phonebook1
     """
     current.execute(sql)
     results = current.fetchall()
@@ -144,7 +144,7 @@ elif req == '8':
 
     offset = (page_number - 1) * page_size
     sql = """
-        SELECT * FROM phonebook LIMIT %s OFFSET %s;
+        SELECT * FROM phonebook1 LIMIT %s OFFSET %s;
     """
     current.execute(sql, (page_size, offset))
     results = current.fetchall()
@@ -160,14 +160,22 @@ elif req == '9':
     print("Enter the name or phone:")
     delete = input()
     sql="""
-        DELETE FROM phonebook WHERE person_name = %s;
+        DELETE FROM phonebook1 WHERE person_name = %s;
     """
     current.execute(sql, (delete,))
     sql="""
-        DELETE FROM phonebook WHERE phone_number = %s;
+        DELETE FROM phonebook1 WHERE phone_number = %s;
     """
     current.execute(sql, (delete,))
     print("Contact", delete, "has been deleted")
+elif req =='11':
+    sql="""
+        UPDATE phonebook1 SET phone_number=REPLACE(phone_number, '+7', '8'); """
+    current.execute(sql)
+# 
+
+for row in results:
+    print(row[0])
 
 else:
     print("Request is unidentified")
@@ -175,3 +183,17 @@ else:
 current.close()
 db.commit()
 db.close()
+
+
+
+# search = input("Введите часть имени: ")
+# sql = """
+#     SELECT person_name
+#     FROM phonebook
+#     WHERE person_name ILIKE %s;
+# """
+# current.execute(sql, ('%' + search + '%',))
+# results = current.fetchall()
+# SELECT phone_number
+# FROM phonebook
+# WHERE phone_number LIKE '8%' OR phone_number LIKE '+7%';

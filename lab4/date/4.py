@@ -9,3 +9,5 @@ end_date = datetime.datetime.strptime(end_str, "%Y-%m-%d")
 time_diff = (end_date - start_date).total_seconds()
 
 print( time_diff)
+
+st = input

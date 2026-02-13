@@ -3,7 +3,7 @@ import csv
 
 result = [["Order", "Name", "Total"]]
 
-file = open('r.txt', 'r', encoding = 'utf-8')
+file = open('/Users/elzaniyazbekova/Desktop/pp2/lab5/r.txt', 'r', encoding = 'utf-8')
 
 text = file.read()
 
